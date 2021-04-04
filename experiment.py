@@ -5,7 +5,8 @@ __author__ = 'Nitrogen'
 import os.path
 import json
 
-from malab import SlabFile, get_next_filename, AttrDict  #, InstrumentManager, LocalInstruments
+from malab import SlabFile, get_next_filename, AttrDict #, InstrumentManager, LocalInstruments
+from malab.instruments.instrumentmanager import InstrumentManager
 
 class Experiment:
     """Base class for all experiments"""
@@ -22,7 +23,7 @@ class Experiment:
 
             also loads InstrumentManager, LivePlotter, and other helpers
         """
-        '''
+
         self.__dict__.update(kwargs)
         self.path = path
         self.prefix = prefix
@@ -37,7 +38,7 @@ class Experiment:
         # self.dataserver= dataserver_client()
         self.fname = os.path.join(path, get_next_filename(path, prefix, suffix='.h5'))
 
-        self.load_config()'''
+        self.load_config()
 
     def load_config(self):
         if self.config_file is None:
@@ -59,8 +60,9 @@ class Experiment:
 
     def save_config(self):
         if self.config_file[:-3] != '.h5':
-            with open(self.config_file, 'w') as fid:
-                json.dump(self.cfg, fid)
+            # this writes the cfg back into the cfg file, not used
+            # with open(self.config_file, 'w') as fid:
+            #     json.dump(self.cfg, fid)
             self.datafile().attrs['config'] = json.dumps(self.cfg)
 
     def datafile(self, group=None, remote=False, data_file = None):
